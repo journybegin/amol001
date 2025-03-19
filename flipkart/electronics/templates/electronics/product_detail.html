@@ -3,202 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop | My eCommerce</title>
-    
-    <!-- Embedded CSS -->
+    <title>Product List</title>
     <style>
-        /* Global Styles */
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color:rgb(76, 7, 172);
-            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
         }
-
-        /* Header & Navbar */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #333;
-            color: white;
-            padding: 15px 50px;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        nav ul li {
-            display: inline;
-            margin: 0 15px;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-        }
-
-        nav ul li a:hover {
-            color: #ffcc00;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: url('banner.jpg') center/cover no-repeat;
-            color: white;
-            padding: 100px 20px;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-
-        .hero p {
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            background: #ffcc00;
-            padding: 12px 25px;
-            color: black;
-            text-decoration: none;
-            font-size: 18px;
-            border-radius: 5px;
-            transition: background 0.3s ease;
-        }
-
-        .btn:hover {
-            background: #e6b800;
-        }
-
-        /* Product Section */
-        .products {
-            padding: 50px 20px;
-        }
-
-        .product-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .product-card {
+        .container {
+            max-width: 800px;
+            margin: auto;
             background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .product {
+            border: 1px solid #ddd;
+            border-radius: 8px;
             padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 250px;
-            transition: transform 0.3s ease;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
         }
-
-        .product-card:hover {
-            transform: scale(1.05);
+        .product h2 {
+            color: #333;
+            margin: 0 0 10px;
         }
-
-        .product-card img {
-            width: 100%;
-            border-radius: 10px;
+        .product p {
+            margin: 5px 0;
+            color: #555;
         }
-
-        .product-info {
-            padding: 10px;
-        }
-
-        .price {
-            color: #28a745;
-            font-size: 18px;
+        .product .price {
             font-weight: bold;
-        }
-
-        .desc {
-            font-size: 14px;
-            color: gray;
-        }
-
-        .add-to-cart {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            width: 100%;
-            transition: background 0.3s ease;
-        }
-
-        .add-to-cart:hover {
-            background: #218838;
-        }
-
-        /* Footer */
-        footer {
-            background: #333;
-            color: white;
-            padding: 10px;
-            margin-top: 20px;
+            color: #e67e22;
         }
     </style>
 </head>
 <body>
-
-    <!-- Navigation Bar -->
-    <header>
-        <div class="logo">My eCommerce</div>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Shop</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">Cart 🛒</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>Welcome to My Shop</h1>
-        <p>Discover the best products at amazing prices.</p>
-        <a href="#products" class="btn">Shop Now</a>
-    </section>
-
-    <!-- Product Section -->
-    <section id="products" class="products">
-        <h2>Our Products</h2>
-        <div class="product-grid">
-            {% for pro in prod %}
-            <div class="product-card">
-                <img src="{{ pro.image.url }}" alt="{{ pro.name }}">
-                <div class="product-info">
-                    <h3>{{ pro.name }}</h3>
-                    <p class="price">${{ pro.price }}</p>
-                    <p class="desc">{{ pro.description|truncatewords:10 }}</p>
-                    <button class="add-to-cart">Add to Cart</button>
-                </div>
-            </div>
-            {% endfor %}
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Add to Cart">
+        </form>
+    </div>
+    <div class="container">
+        {% for pro in prod %}
+        <div class="product">
+            <h2>{{ pro.name }}</h2>
+            <p class="price">${{ pro.price }}</p>
+            <p>{{ pro.description }}</p>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 My eCommerce. All rights reserved.</p>
-    </footer>
-
+        {% endfor %}
+    </div>
 </body>
 </html>
